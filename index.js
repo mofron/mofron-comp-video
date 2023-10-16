@@ -29,10 +29,13 @@ module.exports = class extends mofron.class.Component {
         }
     }
     
-    initDomConts () {
+    initDomConts (prm) {
         try {
-            super.initDomConts('video');
-	    this.controls(true);
+	    let tag = 'video';
+	    if (undefined !== prm) {
+	        tag = prm;
+	    }
+            super.initDomConts(tag);
 	} catch (e) {
             console.error(e.stack);
             throw e;
@@ -41,7 +44,7 @@ module.exports = class extends mofron.class.Component {
 
     src (prm) {
         try {
-            this.childDom().attrs({ 'src': prm });
+            return this.childDom().attrs('src', prm);
         } catch (e) {
             console.error(e.stack);
             throw e;
@@ -50,7 +53,51 @@ module.exports = class extends mofron.class.Component {
 
     controls (prm) {
         try {
-            this.childDom().attrs({ 'controls':prm });
+            return this.childDom().attrs('controls', prm);
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+
+    autoplay (prm) {
+        try {
+            return this.childDom().attrs('autoplay', prm);
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+    
+    attrs (prm) {
+        try {
+            if (true === Array.isArray(prm)) {
+                for (let pidx in prm) {
+                    this.attrs(prm[pidx]);
+                }
+		return;
+            }
+            let set_attr = {};
+            set_attr[prm] = true;
+            this.childDom().attrs(set_attr);
+	} catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+
+    play () {
+        try {
+            this.childDom().getRawDom().play();
+	} catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
+
+    volume (prm) {
+        try {
+	    return this.childDom().props('volume', prm);
 	} catch (e) {
             console.error(e.stack);
             throw e;
